@@ -12,6 +12,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        $i=5/0;
         return inertia('Employees/Index', [
             "employees"=>Employee::with("projects")->get()
         ]);

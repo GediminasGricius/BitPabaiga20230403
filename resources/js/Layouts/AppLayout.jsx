@@ -29,13 +29,22 @@ export default function AppLayout({ children}) {
                                 { user!=null?
                                     <ul className="navbar-nav">
                                         <li className="nav-item">
-                                            <Link className="btn btn-primary mr-3 "  href={ route("employees.index")} >Darbuotojų sąrašas</Link>
+                                            <Link className="nav-link "  href={ route("employees.index")} >Darbuotojų sąrašas</Link>
                                         </li>
+                                        <li className="nav-item">
+                                            <Link className="nav-link "  href={ route("projects.index")} >Projektų sąrašas</Link>
+                                        </li>
+
+
+
                                     </ul>
                                 :
                                     <ul className="navbar-nav">
                                         <li className="nav-item">
-                                            <Link className="btn btn-primary mr-3 "  href={ route("employees.index")} >Darbuotojų sąrašas</Link>
+                                            <Link className="nav-link "  href={ route("employees.index")} >Darbuotojų sąrašas</Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link className="nav-link "  href={ route("projects.index")} >Projektų sąrašas</Link>
                                         </li>
                                     </ul>
                                 }
@@ -54,7 +63,7 @@ export default function AppLayout({ children}) {
                             </div>
                             :
                             <div className="float-end">
-                                <span >Jūs esate prisijungęs kaip: <b>{user.name} ({user.type==1?"administratorius":"vartotojas"})</b> </span>
+                                <span >Sveiki: <b>{user.name} ({user.type==1?"administratorius":"vartotojas"})</b> </span>
                                 <Link className="btn btn-warning " href={route('logout')} method="post"  >Atsijungti</Link>
 
                             </div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,7 +23,9 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Fist' );
+    return Inertia::render('Fist',
+    [
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -32,5 +35,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource("employees", EmployeeController::class);
+Route::resource("projects", ProjectController::class);
 
+Route::get("/projects/{id}/add_employees", [ProjectController::class, "addEmployees"])->name("projects.addEmployees");
+Route::post("/projects/{id}/add_employees", [ProjectController::class, "storeEmployees"])->name("projects.storeEmployees");
+Route::get("/projects/{projectId}/remove_employee/{employeeId}", [ProjectController::class, "removeEmployee"])->name("projects.removeEmployee");
 require __DIR__.'/auth.php';

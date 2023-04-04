@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        return inertia('Projects/Index', [
+            "projects"=>Project::with("employees")->get()
+        ]);
     }
 
     /**
@@ -20,7 +23,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Projects/Create',[
+        ]);
     }
 
     /**
@@ -28,7 +32,8 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Project::create($request->all());
+        return to_route("projects.index");
     }
 
     /**
@@ -44,7 +49,9 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return inertia('Projects/Edit', [
+            "project"=>$project
+        ]);
     }
 
     /**
@@ -52,7 +59,9 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $project->fill($request->all());
+        $project->save();
+        return to_route("projects.index");
     }
 
     /**
@@ -60,6 +69,27 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return to_route("projects.index");
+    }
+
+    public function addEmployees($id){
+        return inertia("Projects/AddEmployees",[
+           "project"=>Project::where('id',$id)->with('employees')->first(),
+            "employees"=>Employee::all()
+        ]);
+    }
+
+    public function storeEmployees($id, Request $request){
+        $project=Project::find($id);
+        $project->employees()->detach($request->employee_id);
+        $project->employees()->attach($request->employee_id);
+        return to_route("projects.addEmployees", $id);
+    }
+
+    public function removeEmployee($projectId,$employeeId){
+        $project=Project::find($projectId);
+        $project->employees()->detach($employeeId);
+        return to_route("projects.addEmployees", $projectId);
     }
 }
